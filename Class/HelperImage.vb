@@ -1,120 +1,121 @@
-Public Class dmBase
+Imports System.Drawing
+Imports System.Windows
+Imports System.Windows.Forms
+
+Public Class HelperImage
 
 
-    Public Shared Function GetStringIsEmpty(ByVal Value As String, ByVal ReturnValue As Object) As Object
-        If String.IsNullOrEmpty(Value) Then
-            Return ReturnValue
-        Else
-            Return Value
+    Public Shared Function GetImageBytes(ByVal img As Image) As Byte()
+        If img Is Nothing Then
+            Return Nothing
         End If
+        'Dim converter As ImageConverter = New ImageConverter()
+        'Return CType(converter.ConvertTo(img, GetType(Byte())), Byte())
+        Using ms As IO.MemoryStream = New IO.MemoryStream()
+            img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg)
+            Return ms.ToArray
+        End Using
     End Function
 
-    Public Shared Function GetNothing(ByVal Value As Object, ByVal ReturnValue As Object) As Object
+    Public Shared Function GetImageBytes(ByVal PictureBox As PictureBox) As Byte()
+        Dim Img As Image = PictureBox.Image
 
-        If TypeOf Value Is Date Then
-            If Value = Nothing Then
-                Return ReturnValue
-            Else
-                Return Value
+        Return GetImageBytes(Img)
+    End Function
+
+
+    Public Shared Function GetImageBytes(ByVal FileName As String) As Byte()
+        Return GetImageBytes(GetImage(FileName))
+    End Function
+
+    Public Shared Function GetImage(ByVal imageData As Byte()) As Image
+
+
+        Dim NewImage As Image
+
+        If imageData Is Nothing Then
+            NewImage = Nothing
+        Else
+
+            Using ms As New IO.MemoryStream(imageData, 0, imageData.Length)
+                ms.Write(imageData, 0, imageData.Length)
+                NewImage = Image.FromStream(ms, True, True)
+            End Using
+
+
+
+
+
+        End If
+
+        Return NewImage
+    End Function
+
+    Public Shared Function GetImage(ByVal filename As String) As Image
+
+        Using originalImage As Image = Image.FromFile(filename)
+            Dim newWidth As Integer = originalImage.Width
+            Dim newHeight As Integer = originalImage.Height
+            Dim aspectRatio As Double = CDbl(originalImage.Width) / CDbl(originalImage.Height)
+
+            Dim newImage As Bitmap = New Bitmap(newWidth, newHeight)
+
+            Using g As Graphics = Graphics.FromImage(newImage)
+                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBilinear
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality
+                g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality
+                g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality
+                g.DrawImage(originalImage, 0, 0, newImage.Width, newImage.Height)
+                Return newImage
+            End Using
+        End Using
+
+
+    End Function
+
+    Public Shared Function ResizeImage(ByVal filename As String, ByVal maxWidth As Integer, ByVal maxHeight As Integer) As Bitmap
+        Using originalImage As Image = Image.FromFile(filename)
+            Dim newWidth As Integer = originalImage.Width
+            Dim newHeight As Integer = originalImage.Height
+            Dim aspectRatio As Double = CDbl(originalImage.Width) / CDbl(originalImage.Height)
+
+            If aspectRatio <= 1 AndAlso originalImage.Width > maxWidth Then
+                newWidth = maxWidth
+                newHeight = CInt(Math.Round(newWidth / aspectRatio))
+            ElseIf aspectRatio > 1 AndAlso originalImage.Height > maxHeight Then
+                newHeight = maxHeight
+                newWidth = CInt(Math.Round(newHeight * aspectRatio))
             End If
-        ElseIf Value Is Nothing Then
-            Return ReturnValue
-        Else
-            Return Value
-        End If
 
+            Dim newImage As Bitmap = New Bitmap(newWidth, newHeight)
 
-
-
+            Using g As Graphics = Graphics.FromImage(newImage)
+                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBilinear
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality
+                g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality
+                g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality
+                g.DrawImage(originalImage, 0, 0, newImage.Width, newImage.Height)
+                Return newImage
+            End Using
+        End Using
     End Function
 
-    Public Shared Function GetDBNull(ByVal Value As Object, ByVal ReturnValue As Object) As Object
-        If IsDBNull(Value) Then
-            Return ReturnValue
-        Else
-            Return Value
-        End If
+    Public Shared Function ResizeImageTo(ByVal filename As String, ByVal Width As Integer, ByVal Height As Integer) As Bitmap
+        Using originalImage As Image = Image.FromFile(filename)
+            Dim newWidth As Integer = originalImage.Width
+            Dim newHeight As Integer = originalImage.Height
+            Dim aspectRatio As Double = CDbl(originalImage.Width) / CDbl(originalImage.Height)
+
+            Dim newImage As Bitmap = New Bitmap(Width, Height)
+
+            Using g As Graphics = Graphics.FromImage(newImage)
+                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBilinear
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality
+                g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality
+                g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality
+                g.DrawImage(originalImage, 0, 0, newImage.Width, newImage.Height)
+                Return newImage
+            End Using
+        End Using
     End Function
-
-
-
-    Public Shared Function GetString(ByVal value As Object) As String
-        If IsDBNull(value) Then
-            Return ""
-        ElseIf IsNothing(value) Then
-            Return ""
-        Else
-            Return value.ToString
-        End If
-    End Function
-
-    Public Shared Function GetInt(ByVal value As Object) As Integer
-        If IsDBNull(value) Then
-            Return Nothing
-        ElseIf IsNothing(value) Then
-            Return Nothing
-        ElseIf value = Nothing Then
-            Return Nothing
-        ElseIf IsNumeric(value) Then
-            Return CInt(value)
-        Else
-            Return Nothing
-        End If
-    End Function
-
-    Public Shared Function GetDecimal(ByVal value As Object) As Decimal
-        If IsDBNull(value) Then
-            Return Nothing
-        ElseIf IsNothing(value) Then
-            Return Nothing
-        ElseIf value = Nothing Then
-            Return Nothing
-        ElseIf IsNumeric(value) Then
-            Return CDec(value)
-        Else
-            Return Nothing
-        End If
-    End Function
-
-    Public Shared Function GetDate(ByVal value As Object) As Date
-        If IsDBNull(value) Then
-            Return Nothing
-        ElseIf IsNothing(value) Then
-            Return Nothing
-        ElseIf value = Nothing Then
-            Return Nothing
-        ElseIf IsDate(value) Then
-            Return CDate(value)
-        Else
-            Return Nothing
-        End If
-    End Function
-
-    Public Shared Function GetTimeSpan(ByVal value As Object) As TimeSpan
-        If IsDBNull(value) Then
-            Return Nothing
-        ElseIf IsNothing(value) Then
-            Return Nothing
-        ElseIf value = Nothing Then
-            Return Nothing
-        ElseIf TypeOf value Is TimeSpan Then
-            Dim Time As TimeSpan = value
-            Return New TimeSpan(Time.Hours, Time.Minutes, 0)
-        Else
-            Return Nothing
-        End If
-    End Function
-
-    Public Shared Function GetBoolean(ByVal value As Object) As Boolean
-        If IsDBNull(value) Then
-            Return False
-        ElseIf IsNothing(value) Then
-            Return False
-        Else
-            Return CBool(value)
-        End If
-    End Function
-
-
-
 End Class
