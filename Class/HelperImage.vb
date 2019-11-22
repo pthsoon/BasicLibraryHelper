@@ -9,12 +9,12 @@ Public Class HelperImage
         If img Is Nothing Then
             Return Nothing
         End If
-        'Dim converter As ImageConverter = New ImageConverter()
-        'Return CType(converter.ConvertTo(img, GetType(Byte())), Byte())
-        Using ms As IO.MemoryStream = New IO.MemoryStream()
-            img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg)
-            Return ms.ToArray
-        End Using
+        Dim converter As ImageConverter = New ImageConverter()
+        Return CType(converter.ConvertTo(img, GetType(Byte())), Byte())
+        'Using ms As IO.MemoryStream = New IO.MemoryStream()
+        '    img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg)
+        '    Return ms.ToArray
+        'End Using
     End Function
 
     Public Shared Function GetImageBytes(ByVal PictureBox As PictureBox) As Byte()
