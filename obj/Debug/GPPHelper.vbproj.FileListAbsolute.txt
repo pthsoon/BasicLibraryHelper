@@ -1,0 +1,9 @@
+C:\Users\petert\Documents\Visual Studio 2013\Projects\Northwind\GPPHelper\bin\Debug\GPPHelper.dll
+C:\Users\petert\Documents\Visual Studio 2013\Projects\Northwind\GPPHelper\bin\Debug\GPPHelper.pdb
+C:\Users\petert\Documents\Visual Studio 2013\Projects\Northwind\GPPHelper\bin\Debug\GPPHelper.xml
+C:\Users\petert\Documents\Visual Studio 2013\Projects\Northwind\GPPHelper\obj\Debug\GPPHelper.Resources.resources
+C:\Users\petert\Documents\Visual Studio 2013\Projects\Northwind\GPPHelper\obj\Debug\GPPHelper.vbproj.GenerateResource.Cache
+C:\Users\petert\Documents\Visual Studio 2013\Projects\Northwind\GPPHelper\obj\Debug\GPPHelper.dll
+C:\Users\petert\Documents\Visual Studio 2013\Projects\Northwind\GPPHelper\obj\Debug\GPPHelper.xml
+C:\Users\petert\Documents\Visual Studio 2013\Projects\Northwind\GPPHelper\obj\Debug\GPPHelper.pdb
+C:\Users\petert\Documents\Visual Studio 2013\Projects\Northwind\GPPHelper\obj\Debug\GPPHelper.vbprojResolveAssemblyReference.cache
