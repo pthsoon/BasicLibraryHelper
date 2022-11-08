@@ -5,13 +5,15 @@ Public Class ImageHelper
 
 
     Public Shared Function GetImage(ByVal Path As String) As Image
-        Dim result As Image
-        Using stream As FileStream = New FileStream(Path, FileMode.Open, FileAccess.Read)
-            result = Image.FromStream(stream)
-        End Using
-
+        Dim result As Image = Nothing
+        If IO.File.Exists(Path) Then
+            Using stream As FileStream = New FileStream(Path, FileMode.Open, FileAccess.Read)
+                result = Image.FromStream(stream)
+            End Using
+        End If
         Return result
     End Function
+
 
     Public Shared Function GetImage(ByVal Data As Byte()) As Image
         Try
@@ -27,12 +29,15 @@ Public Class ImageHelper
 
 
     Public Shared Function GetImageBytes(ByVal Image As Image) As Byte()
-        Dim data As Byte()
-        Using ms As New MemoryStream()
-            Dim bmpImage As New Bitmap(Image)
-            bmpImage.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg)
-            data = ms.GetBuffer()
-        End Using
+        Dim data As Byte() = Nothing
+        If Image IsNot Nothing Then
+            Using ms As New MemoryStream()
+                Dim bmpImage As New Bitmap(Image)
+                bmpImage.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg)
+                data = ms.GetBuffer()
+            End Using
+        End If
+      
         Return data
     End Function
 
@@ -58,6 +63,20 @@ Public Class ImageHelper
     End Sub
 
 
+    '#Save Image
+    'Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+    '    Try
+    '        Dim localRef As New BLLCustomer
+    '        Dim ms As New MemoryStream()
+    '        Dim image As Drawing.Image = PictureBox1.Image
+    '        Dim data As Byte() = ImageHelper.GetImageBytes(image)
+    '        localRef.AddCustomer(Me.TextBox1.Text, data)
+
+    '        LoadCustomer()
+    '    Catch ex As Exception
+    '        MsgBox(ex.Message)
+    '    End Try
+    'End Sub
 
     'Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
     '    Try
@@ -81,7 +100,12 @@ Public Class ImageHelper
     '    If Me.DataGridView1.Rows.Count > 0 Then
     '        Dim dr As DataGridViewRow = DataGridView1.CurrentRow
     '        TextBox1.Text = dr.Cells(1).Value.ToString()
-    '        Me.PictureBox1.Image = ImageHelper.GetImage(dr.Cells(2).Value)
+    '        If IsDBNull(dr.Cells(2).Value) = False Then
+    '            Me.PictureBox1.Image = ImageHelper.GetImage(dr.Cells(2).Value)
+    '        Else
+    '            Me.PictureBox1.Image = Nothing
+    '        End If
+
 
     '    End If
     'End Sub
