@@ -1,4 +1,4 @@
-﻿Imports System.Drawing
+Imports System.Drawing
 Imports System.IO
 
 Public Class ImageHelper
@@ -56,5 +56,51 @@ Public Class ImageHelper
             End Using
         End Using
     End Sub
+
+
+
+    'Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+    '    Try
+    '        With OpenFileDialog1
+    '            .Filter = ("Images |*.png; *.bmp; *.jpg;*.jpeg; *.gif;")
+    '            .FilterIndex = 4
+    '        End With
+    '        'Clear the file name
+    '        OpenFileDialog1.FileName = ""
+    '        If OpenFileDialog1.ShowDialog() = DialogResult.OK Then
+    '            PictureBox1.Image = ImageHelper.GetImage(OpenFileDialog1.FileName)
+    '            'PictureBox1.Image = Image.FromFile(OpenFileDialog1.FileName.Clone)
+    '        End If
+    '    Catch ex As Exception
+    '        MsgBox(ex.ToString())
+    '    End Try
+    'End Sub
+
+    'Private Sub DataGridView1_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellClick
+
+    '    If Me.DataGridView1.Rows.Count > 0 Then
+    '        Dim dr As DataGridViewRow = DataGridView1.CurrentRow
+    '        TextBox1.Text = dr.Cells(1).Value.ToString()
+    '        Me.PictureBox1.Image = ImageHelper.GetImage(dr.Cells(2).Value)
+
+    '    End If
+    'End Sub
+
+    'Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+    '    Try
+    '        With SaveFileDialog1
+    '            .Filter = ("Images |*.png; *.bmp; *.jpg;*.jpeg; *.gif;")
+    '            .FilterIndex = 4
+    '        End With
+    '        'Clear the file name
+
+    '        If SaveFileDialog1.ShowDialog() = DialogResult.OK Then
+    '            ImageHelper.ExportImage(PictureBox1.Image, SaveFileDialog1.FileName)
+
+    '        End If
+    '    Catch ex As Exception
+    '        MsgBox(ex.ToString())
+    '    End Try
+    'End Sub
 
 End Class
